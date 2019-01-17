@@ -3,16 +3,16 @@ package utils;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import static org.junit.Assert.*;
+import static utils.Utils.checkNotNull;
 
-
-public class UtilsTest extends Utils {
+public class UtilsTest {
     @Rule
     public ExpectedException expectedEx = ExpectedException.none();
 
     @Test(expected = NullPointerException.class)
     public void checkNotNull_simpleNull_shouldThrow() {
-        Object object = null;
-        checkNotNull(object);
+        checkNotNull((Object) null);
     }
 
     @Test
@@ -31,4 +31,10 @@ public class UtilsTest extends Utils {
         checkNotNull(object, errorMsg);
     }
 
+    @Test
+    public void getCurrentMilliseconds_SanityCheck() {
+        long cur = Utils.getCurrentMilliseconds();
+        long dateOnTestCreationDate = 1547717045000L;
+        assertTrue(cur > dateOnTestCreationDate);
+    }
 }

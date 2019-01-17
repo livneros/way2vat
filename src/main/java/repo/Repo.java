@@ -12,6 +12,9 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.googlecode.objectify.ObjectifyService.ofy;
+import static utils.Constants.EXPECTED_WEB_SAFE_KEY_GOT_NULL;
+import static utils.Utils.checkNotNull;
+
 import utils.Constants;
 import utils.Utils;
 
@@ -36,8 +39,12 @@ public class Repo {
     }
 
     public <T> T load(String webSafeKey) {
-        Utils.checkNotNull(webSafeKey, Constants.EXPECTED_WEB_SAFE_KEY_GOT_NULL);
-        return load(Key.<T>valueOf(webSafeKey));
+        checkKeyNotNull(webSafeKey);
+        return load(Key.valueOf(webSafeKey));
+    }
+
+    private void checkKeyNotNull(String webSafeKey) {
+        checkNotNull(webSafeKey, EXPECTED_WEB_SAFE_KEY_GOT_NULL);
     }
 
     public <T> Iterable<T> load(Class<T> type, int fromIndex, int toIndex) {
@@ -51,7 +58,7 @@ public class Repo {
     public <T> List<T> load(List<String> webSafeKeys) {
         Collection<Key<T>> keys = new ArrayList<>();
         for (String webSafeKey : webSafeKeys) {
-            keys.add(Key.<T>create(webSafeKey));
+            keys.add(Key.create(webSafeKey));
         }
         return new ArrayList<>(load(keys));
     }
@@ -68,6 +75,7 @@ public class Repo {
         ofy().delete().key(key).now();
     }
     public <T> void delete(String key) {
+        checkKeyNotNull(key);
         ofy().delete().key(Key.<T>create(key)).now();
     }
 

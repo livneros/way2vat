@@ -1,5 +1,10 @@
 package utils;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+
+import static utils.Constants.EMPTY_STRING;
+
 public class Utils {
 
     private static final String EXPECTED_OBJECT_GOT_NULL = "Expected Object, got null";
@@ -31,5 +36,18 @@ public class Utils {
             if (object == null)
                 throw new NullPointerException(EXPECTED_OBJECT_GOT_NULL);
         }
+    }
+
+    public static String convertNullToEmptyString(String content) {
+        try{
+            checkNotNull(content);
+            return content;
+        }catch (Exception e){
+            return EMPTY_STRING;
+        }
+    }
+
+    public static long getCurrentMilliseconds() {
+        return LocalDateTime.now().toEpochSecond(ZoneOffset.UTC);
     }
 }
