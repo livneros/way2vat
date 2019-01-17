@@ -9,6 +9,7 @@ import utils.Utils;
 import wrappers.post.AddPostRequest;
 
 import javax.annotation.Nonnull;
+import javax.rmi.CORBA.Util;
 
 @Entity
 public class Post implements EntityRoot{

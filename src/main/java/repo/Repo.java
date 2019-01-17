@@ -1,6 +1,7 @@
 package repo;
 
 
+import com.google.api.server.spi.response.BadRequestException;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.cmd.Query;
 import entities.EntityRoot;
@@ -35,12 +36,16 @@ public class Repo {
         return ofy().load().key(key).safe();
     }
 
-    public <T> T load(String webSafeKey) {
+    public <T> T load(String webSafeKey) throws BadRequestException {
         checkKeyNotNull(webSafeKey);
-        return load(Key.valueOf(webSafeKey));
+        try {
+            return load(Key.valueOf(webSafeKey));
+        }catch (Exception e){
+            throw new EntityNotFoundException();
+        }
     }
 
-    private void checkKeyNotNull(String webSafeKey) {
+    private void checkKeyNotNull(String webSafeKey) throws BadRequestException {
         checkNotNull(webSafeKey, EXPECTED_WEB_SAFE_KEY_GOT_NULL);
     }
 
@@ -60,8 +65,8 @@ public class Repo {
         return new ArrayList<>(load(keys));
     }
 
-    public <T> Key<T> save(T entity) {
-        return ofy().save().entity(entity).now();
+    public <T> String save(T entity) {
+        return ofy().save().entity(entity).now().toWebSafeString();
     }
 
     public <T> Iterable<Key<T>> save(Collection<T> entities) {
@@ -71,7 +76,7 @@ public class Repo {
     public <T> void delete(Key<T> key) {
         ofy().delete().key(key).now();
     }
-    public <T> void delete(String key) {
+    public <T> void delete(String key) throws BadRequestException {
         checkKeyNotNull(key);
         ofy().delete().key(Key.<T>create(key)).now();
     }

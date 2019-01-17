@@ -1,5 +1,7 @@
 package utils;
 
+import com.google.api.server.spi.response.BadRequestException;
+
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
@@ -9,32 +11,26 @@ public class Utils {
 
     private static final String EXPECTED_OBJECT_GOT_NULL = "Expected Object, got null";
 
-    static void checkNotNull(Object obj) {
+    static void checkNotNull(Object obj) throws BadRequestException {
         if (obj == null)
-            throw new NullPointerException(EXPECTED_OBJECT_GOT_NULL);
+            throw new BadRequestException(EXPECTED_OBJECT_GOT_NULL);
     }
 
-    public static void checkNotEmptyString(String string){
-        if(string.equals("")){
-            throw new BadDataException(Constants.EXPECTED_NOT_EMPTY_STRING);
-        }
-    }
-
-    public static <T> T checkNotNull(T obj, String msg) {
+    public static <T> T checkNotNull(T obj, String msg) throws BadRequestException {
         if (obj == null)
-            throw new NullPointerException(msg);
+            throw new BadRequestException(msg);
         return obj;
     }
 
-    public static <T> T checkNotNull(T obj, String template, Object... args) {
+    public static <T> T checkNotNull(T obj, String template, Object... args) throws BadRequestException {
         String msg = args == null ? template: String.format(template, args);
         return checkNotNull(obj, msg);
     }
 
-    public static void checkNotNull(Object... objects) {
+    public static void checkNotNull(Object... objects) throws BadRequestException {
         for (Object object : objects) {
             if (object == null)
-                throw new NullPointerException(EXPECTED_OBJECT_GOT_NULL);
+                throw new BadRequestException(EXPECTED_OBJECT_GOT_NULL);
         }
     }
 

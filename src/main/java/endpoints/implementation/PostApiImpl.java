@@ -1,5 +1,6 @@
 package endpoints.implementation;
 
+import com.google.api.server.spi.response.BadRequestException;
 import entities.Post;
 import repo.Repo;
 import utils.Utils;
@@ -25,33 +26,37 @@ public class PostApiImpl {
 
     public KeyWrapper addPost(AddPostRequest addPostRequest){
         Post post = Post.from(addPostRequest);
-        String postKey = repo.save(post).toWebSafeString();
+        return savePost(post);
+    }
+
+    KeyWrapper savePost(Post post) {
+        String postKey = repo.save(post);
         return KeyWrapper.From(postKey);
     }
 
-    public void deletePost(String postKey) {
+    public void deletePost(String postKey) throws BadRequestException {
         repo.delete(postKey);
     }
 
-    public GetPostResponse getPost(String postKey) {
+    public GetPostResponse getPost(String postKey) throws BadRequestException {
         Post post = repo.load(postKey);
         return GetPostResponse.from(post);
     }
 
-    public void editPost(String postKey, EditPostRequest editPostRequest) {
+    public void editPost(String postKey, EditPostRequest editPostRequest) throws BadRequestException {
         Post post = repo.load(postKey);
         post.setContent(editPostRequest.getContent());
         repo.save(post);
     }
 
-    public void upVote(String postKey) {
+    public void upVote(String postKey) throws BadRequestException {
         Post post = repo.load(postKey);
         post.incrementUpVote();
         post.incrementTotalVotes();
         repo.save(post);
     }
 
-    public void downVote(String postKey) {
+    public void downVote(String postKey) throws BadRequestException {
         Post post = repo.load(postKey);
         post.decrementdownVote();
         post.decrementTotalVote();
@@ -63,10 +68,7 @@ public class PostApiImpl {
         return GetPostsResponse.from(posts);
     }
 
-    public GetPostsResponse getPostsFrom(Long from) {
-        if (from == null) {
-            from = Utils.getCurrentMilliseconds();
-        }
+    public GetPostsResponse getPostsFrom(long from) {
         List<Post> posts = repo.load(Post.class, PAGE_SIZE, new Repo.FilterPair(PAGINATION_BY + " <", from));
         return GetPostsResponse.from(posts);
     }
