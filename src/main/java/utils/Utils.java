@@ -48,6 +48,6 @@ public class Utils {
     }
 
     public static long getCurrentMilliseconds() {
-        return LocalDateTime.now().toEpochSecond(ZoneOffset.UTC);
+        return System.currentTimeMillis();
     }
 }

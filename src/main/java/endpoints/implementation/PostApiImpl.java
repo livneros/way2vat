@@ -1,5 +1,6 @@
 package endpoints.implementation;
 
+import com.googlecode.objectify.Key;
 import entities.Post;
 import repo.Repo;
 import utils.Utils;
@@ -19,7 +20,8 @@ public class PostApiImpl {
 
     public KeyWrapper addPost(AddPostRequest addPostRequest){
         Post post = Post.from(addPostRequest);
-        return KeyWrapper.From(post);
+        String postKey = repo.save(post).toWebSafeString();
+        return KeyWrapper.From(postKey);
     }
 
     public void deletePost(String postKey) {

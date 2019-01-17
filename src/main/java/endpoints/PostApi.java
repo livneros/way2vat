@@ -13,7 +13,7 @@ import wrappers.post.GetPostResponse;
 import static com.google.api.server.spi.config.ApiMethod.HttpMethod.*;
 
 @Api(
-        name = "Way2Vat",
+        name = "way2vat",
         version = "v1"
 )
 public class PostApi {

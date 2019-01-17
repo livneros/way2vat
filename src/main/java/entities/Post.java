@@ -13,7 +13,6 @@ import javax.annotation.Nonnull;
 public class Post implements EntityRoot{
     @Id
     private Long id;
-    private String webSafeKey;
     private int upVotes;
     private int downVotes;
     private int totalVotes;
@@ -25,6 +24,9 @@ public class Post implements EntityRoot{
         this.content = content;
         this.creationDate = creationDate;
         this.lastUpdated = lastUpdated;
+    }
+
+    public Post() {
     }
 
     public int getTotalVotes() {

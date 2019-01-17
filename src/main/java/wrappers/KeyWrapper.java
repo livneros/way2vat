@@ -23,4 +23,7 @@ public class KeyWrapper {
     public static <T extends EntityRoot> KeyWrapper From(T entityRoot){
         return new KeyWrapper(entityRoot.getWebSafeKey());
     }
+    public static KeyWrapper From(String key){
+        return new KeyWrapper(key);
+    }
 }
