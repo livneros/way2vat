@@ -101,12 +101,11 @@ public class Repo {
         return query.list();
     }
 
-    public <T> List<T> load(Class<T> type, int limit,  FilterPair... filters) {
+    public <T> List<T> load(Class<T> type, int limit, String orderBy, FilterPair filter) {
         Query<T> query = getQuery(type);
-        for (Pair<String, Object> filter : filters) {
-            query = query.filter(filter.getLeft(), filter.getRight());
-        }
-        return query.limit(limit).list();
+        query = query.filter(filter.getLeft(), filter.getRight());
+
+        return query.limit(limit).order(orderBy).list();
     }
 
     public static class FilterPair extends Pair<String, Object> {

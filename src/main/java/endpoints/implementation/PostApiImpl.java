@@ -16,7 +16,7 @@ import java.util.List;
 
 public class PostApiImpl {
 
-    private static final Integer PAGE_SIZE = 2;
+    private static final Integer PAGE_SIZE = 30;
     private static final String PAGINATION_BY = "creationDate";
     private Repo repo;
 
@@ -69,8 +69,13 @@ public class PostApiImpl {
     }
 
     public GetPostsResponse getPostsFrom(long from) {
-        List<Post> posts = repo.load(Post.class, PAGE_SIZE, new Repo.FilterPair(PAGINATION_BY + " <", from));
+        List<Post> posts = repo.load(Post.class, PAGE_SIZE, getOrderByDescending(),
+                new Repo.FilterPair(PAGINATION_BY + " <", from));
         return GetPostsResponse.from(posts);
+    }
+
+    private String getOrderByDescending() {
+        return "-" + PAGINATION_BY;
     }
 }
 
