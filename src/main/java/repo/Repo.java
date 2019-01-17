@@ -15,9 +15,6 @@ import static com.googlecode.objectify.ObjectifyService.ofy;
 import static utils.Constants.EXPECTED_WEB_SAFE_KEY_GOT_NULL;
 import static utils.Utils.checkNotNull;
 
-import utils.Constants;
-import utils.Utils;
-
 public class Repo {
 
     public Repo(){

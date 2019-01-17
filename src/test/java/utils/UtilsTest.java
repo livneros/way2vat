@@ -35,6 +35,7 @@ public class UtilsTest {
     public void getCurrentMilliseconds_SanityCheck() {
         long cur = Utils.getCurrentMilliseconds();
         long dateOnTestCreationDate = 1547717045000L;
+        System.out.println(cur);
         assertTrue(cur > dateOnTestCreationDate);
     }
 }

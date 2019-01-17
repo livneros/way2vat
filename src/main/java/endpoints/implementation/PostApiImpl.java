@@ -1,6 +1,5 @@
 package endpoints.implementation;
 
-import com.googlecode.objectify.Key;
 import entities.Post;
 import repo.Repo;
 import utils.Utils;
@@ -8,10 +7,16 @@ import wrappers.KeyWrapper;
 import wrappers.post.AddPostRequest;
 import wrappers.post.EditPostRequest;
 import wrappers.post.GetPostResponse;
+import wrappers.post.GetPostsResponse;
 
-import static utils.Utils.checkNotNull;
+import java.util.List;
+
+
 
 public class PostApiImpl {
+
+    private static final Integer PAGE_SIZE = 2;
+    private static final String PAGINATION_BY = "creationDate";
     private Repo repo;
 
     public PostApiImpl(Repo repo) {
@@ -52,4 +57,18 @@ public class PostApiImpl {
         post.decrementTotalVote();
         repo.save(post);
     }
+
+    public GetPostsResponse getPosts() {
+        List<Post> posts = repo.load(Post.class);
+        return GetPostsResponse.from(posts);
+    }
+
+    public GetPostsResponse getPostsFrom(Long from) {
+        if (from == null) {
+            from = Utils.getCurrentMilliseconds();
+        }
+        List<Post> posts = repo.load(Post.class, PAGE_SIZE, new Repo.FilterPair(PAGINATION_BY + " <", from));
+        return GetPostsResponse.from(posts);
+    }
 }
+

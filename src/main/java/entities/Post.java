@@ -4,6 +4,7 @@ import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
+import com.googlecode.objectify.annotation.Index;
 import utils.Utils;
 import wrappers.post.AddPostRequest;
 
@@ -15,8 +16,10 @@ public class Post implements EntityRoot{
     private Long id;
     private int upVotes;
     private int downVotes;
+    @Index
     private int totalVotes;
     private String content;
+    @Index
     private long creationDate;
     private long lastUpdated;
 

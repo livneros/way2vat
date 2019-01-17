@@ -9,6 +9,7 @@ import wrappers.KeyWrapper;
 import wrappers.post.AddPostRequest;
 import wrappers.post.EditPostRequest;
 import wrappers.post.GetPostResponse;
+import wrappers.post.GetPostsResponse;
 
 import static com.google.api.server.spi.config.ApiMethod.HttpMethod.*;
 
@@ -46,6 +47,24 @@ public class PostApi {
     )
     public GetPostResponse getPost(@Named("postKey") String postKey){
         return impl.getPost(postKey);
+    }
+
+    @ApiMethod(
+            name = "getPosts",
+            path = "/post",
+            httpMethod = GET
+    )
+    public GetPostsResponse getPosts(){
+        return impl.getPosts();
+    }
+
+    @ApiMethod(
+            name = "getPostsFrom",
+            path = "/post/from/{from}",
+            httpMethod = GET
+    )
+    public GetPostsResponse getPostsFrom(@Named("from") Long from){
+        return impl.getPostsFrom(from);
     }
 
     @ApiMethod(
